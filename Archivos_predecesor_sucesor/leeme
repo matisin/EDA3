@@ -1,0 +1,5 @@
+Para compilar el programa se debe ejecutar el siguiente comando: g++ -std=c++11 -O3 -DNDEBUG -I ~/include -L ~/lib main.cpp bst.cpp bitmap.cpp 
+bitmap_h0.cpp -o main -lsdsl -ldivsufsort -ldivsufsort64 
+Y luego simplemente ejecutar ./a.out
+Los scripts son para generar los graficos a partir de los datos generados por el algoritmo, para generar los datos se utilizó gnu plot y la 
+orden para generarlos es gnuplot plotx.script -p donde hay que reemplazar x por el numero de script. 
