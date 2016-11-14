@@ -57,7 +57,7 @@ Para poder calcular el predecesor y sucesor de un elemento del BST primero debem
 \begin{minipage}{.4\textwidth}
 \centering
 \includegraphics[scale=0.5]{max_arbol.pdf}
-\\\scriptsize{\color{white}.\color{black}\\Figura 6: Nodo máxmimo en un BST}
+\\\scriptsize{\color{white}.\color{black}\\Figura 6: Nodo máximo en un BST}
 \label{etiqueta}
 \end{minipage}
 \end{figure}
@@ -96,27 +96,27 @@ Para responder a las consultas predecesor y sucesor podemos usar las operaciones
 \end{itemize}
 \subsection{Análisis de complejidad de las soluciones}
 \subsubsection{BST}
-Las operaciones necesarias para obtener el predecesor y sucesor toman un tiempo que es proporcional a la altura del árbol. Para un BST con n nodos, las operaciones quedan acotadas a tiempos O(Log(n)) usando el método de analsis en el caso promedio y acotadas a tiempos O(n) usando el método de peor caso, cuando el árbol no está balanceado y hay que recorrer los nodos de manera secuencual.
+Las operaciones necesarias para obtener el predecesor y sucesor toman un tiempo que es proporcional a la altura del árbol. Para un BST con n nodos, las operaciones quedan acotadas a tiempos O(Log(n)) usando el método de análisis en el caso promedio y acotadas a tiempos O(n) usando el método de peor caso, cuando el árbol no está balanceado y hay que recorrer los nodos de manera secuencial.
 \subsubsection{Bitmap}
 Las únicas operaciones utilizadas en el bitmap son rank y select, las cuales pueden ser respondidas en tiempo constante O(1) utilizando bitmaps normales y también en tiempo O(k) para rank (k es la clave) y O(log n)  para select utilizando bitmaps H$_{0}$ - comprimidos, ambos ya implementados en la librería sdsl.
 \subsection{Implementación de soluciones}
-Se implementaros 3 clases en c++, BinarySearchTree, BitMap y BitMapH0, cada una de estas clases recibe como parámetro en su método constructor un vector de datos y a partir de este se inicializa cada estructura con dichos datos.
+Se implementaron 3 clases en c++, BinarySearchTree, BitMap y BitMapH0, cada una de estas clases recibe como parámetro en su método constructor un vector de datos y a partir de este se inicializa cada estructura con dichos datos.
 
 \subsubsection{BinarySearchTree}
 Correspondiente a los archivos bst.cpp y bst.h, esta clase se implementó a partir de nodos que contienen un dato y punteros a sus hijos izquierdo, derecho y su nodo padre. La clase tiene guardada el nodo raíz y a partir del mismo se localiza el resto de los nodos.
 \subsubsection{BitMap}
 Corrrespondiente a los archivos bitmap.cpp y bitmap.h, esta clase se implementó a partir de la clase bit$\_$vector de la librería sdsl. La clase contiene un bit$\_$vector el cual tiene soporte de rank y select, métodos utilizados para obtener el predecesor y sucesor.
 \subsubsection{BitMapH0}
-Correspondiente a los archivos bitmap$\_$h0.cpp y bitmap$\_$h0.h, esta clase se implementó a partir de la clase rrr$\_$vector de la librería sdsl. Dicha clase corresponde a un bitmap H$_{0}$-compromido y también tiene soporte de rank y select, ambos métodos utilizados de la misma forma que para BitMap, se podría decir que ambas clases son análogas.
+Correspondiente a los archivos bitmap$\_$h0.cpp y bitmap$\_$h0.h, esta clase se implementó a partir de la clase rrr$\_$vector de la librería sdsl. Dicha clase corresponde a un bitmap H$_{0}$-comprimido y también tiene soporte de rank y select, ambos métodos utilizados de la misma forma que para BitMap, se podría decir que ambas clases son análogas.
 \subsection{Dataset para los experimentos}
 Para poder medir el tiempo de ejecutar la operación predecesor y sucesor, se utilizó un vector con \textbf{M} datos no repetidos, ordenados randómicamente en un rango \textbf{[1,N]}, con M = N / 2 en cada iteración. El valor de \textbf{M} disminuye a la mitad por cada iteración en un total de 8 iteraciones. El tamaño inicial del vector es de 8 Mb, siendo este incrementado hasta 1 Gb. Se utilizó el mismo vector para cada clase por iteración, solo cambiando este al comenzar una nueva iteración.
 \subsection{Resultados experimentales}
 \subsubsection{Formulación de hipótesis}
-En base al análisis de complejidad de cada solución en el caso proemdio, el bitmap debería ser más rápido, seguido por bitmap H$_{0}$-comprimido y finalmente el bst. 
+En base al análisis de complejidad de cada solución en el caso promedio, el bitmap debería ser más rápido, seguido por bitmap H$_{0}$-comprimido y finalmente el bst. 
 \subsubsection{Experimento}
-El siguiente experimento fué ejecutado en un computador con un procesador Intel Core i5 3230M (2600 MHz - 3200 MHz) con 12 Gb de memoría RAM. En cada iteración se ejecutó cada opreación (predecesor y sucesor) 10.000 veces por cada clase sobre un elemento randómico distinto contenido en el vector original. Se midió el tiempo por cada operación y se calculó un promedió de las 10.000 operaciones distintas por cada clase.
+El siguiente experimento fué ejecutado en un computador con un procesador Intel Core i5 3230M (2600 MHz - 3200 MHz) con 12 Gb de memoria RAM. En cada iteración se ejecutó cada operación (predecesor y sucesor) 10.000 veces por cada clase sobre un elemento randómico distinto contenido en el vector original. Se midió el tiempo por cada operación y se calculó un promedió de las 10.000 operaciones distintas por cada clase.
 \subsubsection{Resultados}
-Luego de finalizada la ejecución del experimento se obtubieron los siguientes resultados, con M medido en Mb y el tiempo promedio de cada opreación medido en milisegundos.
+Luego de finalizada la ejecución del experimento se obtuvieron los siguientes resultados, con M medido en Mb y el tiempo promedio de cada operación medido en mili segundos.
 \begin{center}\begin{tabular}{|l|c|c|c|c|c|c|}
 \hline
 	$M$ & $BST$ $pred$ & $BST$ $suc$ & $BM$ $pred$ & $BM$ $suc$ & $BMH_{0}$ $pred$ & $BMH_{0}$ $suc$ \\
@@ -157,7 +157,7 @@ Para mejor visualización y análisis, se graficó los datos de la figura 10 en 
 \end{center}
 \clearpage
 \subsubsection{Conclusión experimento}
-Como podemos ver en la figura 11 y 12, los resultados obtenidos comprueban la hipótesis formulada al comienzo del experimento, para el cálculo del predecesor y sucesor el peor resultado obtenido fué la solución del BST. la curva de este tiene forma logarítmica. Para los bitmaps, el bitmap sin compresión obtuvo el mejor resultado.\\
+Como podemos ver en la figura 11 y 12, los resultados obtenidos comprueban la hipótesis formulada al comienzo del experimento, para el cálculo del predecesor y sucesor el peor resultado obtenido fue la solución del BST. la curva de este tiene forma logarítmica. Para los bitmaps, el bitmap sin compresión obtuvo el mejor resultado.\\
 
-Para el problema de predecesor y sucesor, la utilización de bitmaps presentó una mejora sobre el uso de binary search tree en terminos de tiempo y espacio. El bitmap sin compresión es más rapido que su contraparte comprimida pero, evidentemente, gasta más espacio, por lo tanto la utilización de uno sobre otro depente de los requerimientos, si se debe priorizar tiempo por sobre espacio entonces es recomendable utilizar bitmap sin compresión, en el caso contrario es mejor utilizar bitmap H$_{0}$-comprimido.
+Para el problema de predecesor y sucesor, la utilización de bitmaps presentó una mejora sobre el uso de binary search tree en términos de tiempo y espacio. El bitmap sin compresión es más rápido que su contraparte comprimida pero, evidentemente, gasta más espacio, por lo tanto la utilización de uno sobre otro depende de los requerimientos, si se debe priorizar tiempo por sobre espacio entonces es recomendable utilizar bitmap sin compresión, en el caso contrario es mejor utilizar bitmap H$_{0}$-comprimido.
 \end{document}
