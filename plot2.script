@@ -1,0 +1,10 @@
+set title "Sucesor"
+set key box
+set key bmargin right
+set key box
+set key bmargin right
+set xlabel "Tamaño datos en Mb"	
+set ylabel "Tiempo(ms)"
+plot 	"exp.txt" using ($1/2**20):3 with lines title "BST" lc rgb "blue", \
+	"exp.txt" using ($1/2**20):5 with lines title "Bitmap" lc rgb "red", \
+	"exp.txt" using ($1/2**20):7 with lines title "Bitmap h0" lc rgb "green"
