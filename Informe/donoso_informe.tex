@@ -134,19 +134,19 @@ Se tiene \textbf{t} elementos de un conjunto [1,n] y se quieren hacer dos tipos 
 \end{itemize}
 Para este problema se proponen dos soluciones usando las siguientes estructuras de datos:
 \subsection{Solución BST}
-Para poder calcular el predecesor y sucesor de un elemento del BST primero debemos definir el mínimo y máximo elemento en un árbol binario. Los nodos mínimo y máximo de un BST se encontrarían más a la izquierda y más a la derecha respectivamente desde la raíz (ver figura 5 y 6). 
+Para poder calcular el predecesor y sucesor de un elemento del BST primero debemos definir el mínimo y máximo elemento en un árbol binario. Los nodos mínimo y máximo de un BST se encontrarían más a la izquierda y más a la derecha respectivamente desde la raíz (ver figura 6 y 7). 
 \begin{figure}[htp]
 \centering
 \begin{minipage}{.4\textwidth}
 \centering
 \includegraphics[scale=0.5]{min_arbol.pdf}
-\\\scriptsize{\color{white}.\color{black}\\Figura 5: Nodo mínimo en un BST}
+\\\scriptsize{\color{white}.\color{black}\\Figura 6: Nodo mínimo en un BST}
 \label{etiqueta}
 \end{minipage}
 \begin{minipage}{.4\textwidth}
 \centering
 \includegraphics[scale=0.5]{max_arbol.pdf}
-\\\scriptsize{\color{white}.\color{black}\\Figura 6: Nodo máximo en un BST}
+\\\scriptsize{\color{white}.\color{black}\\Figura 7: Nodo máximo en un BST}
 \label{etiqueta}
 \end{minipage}
 \end{figure}
@@ -161,12 +161,12 @@ Entonces, Para poder encontrar el predecesor y sucesor:
 \end{itemize}
 \end{itemize}
 \subsection{Solución Bitmap}
-Cada indice del bitmap B representa un elemento de conjunto [1,n], donde un 1 representa que el elemento es uno de los t elementos, como se puede ver en la figura 7.\\
+Cada indice del bitmap B representa un elemento de conjunto [1,n], donde un 1 representa que el elemento es uno de los t elementos, como se puede ver en la figura 8.\\
 
 \begin{figure}[htp]
 \centering
 \includegraphics[scale=0.5]{bitmap.pdf}
-\\\scriptsize{\color{white}.\color{black}\\Figura 7: Nodo mínimo en un BST}
+\\\scriptsize{\color{white}.\color{black}\\Figura 8: Nodo mínimo en un BST}
 \end{figure}
 Para responder a las consultas predecesor y sucesor podemos usar las operaciones rank y select de los bitmaps:
 \begin{itemize}
@@ -174,13 +174,13 @@ Para responder a las consultas predecesor y sucesor podemos usar las operaciones
 \begin{figure}[htp]
 \centering
 \includegraphics[scale=0.5]{bitmapsuc.pdf}
-\\\scriptsize{\color{white}.\color{black}\\Figura 8: Ejemplo de sucesor con i = 11}
+\\\scriptsize{\color{white}.\color{black}\\Figura 9: Ejemplo de sucesor con i = 11}
 \end{figure}
 \item Predecesor: Select(B, Rank (B, i $-$ 1))
 \begin{figure}[htp]
 \centering
 \includegraphics[scale=0.5]{bitmappred.pdf}
-\\\scriptsize{\color{white}.\color{black}\\Figura 9: Ejemplo de predecesor con i = 11}
+\\\scriptsize{\color{white}.\color{black}\\Figura 10: Ejemplo de predecesor con i = 11}
 \end{figure}
 \end{itemize}
 \subsection{Análisis de complejidad de las soluciones}
@@ -227,20 +227,20 @@ Luego de finalizada la ejecución del experimento se obtuvieron los siguientes r
 1024 &	   2.9252	&   2.9399	&   0.6229 &	   0.6148 &	   1.2804 &	   1.2132 \\ 
 \hline
 \end{tabular}
-\\\scriptsize{\color{white}.\color{black}\\Figura 10: Tabla de resultados tiempo de ejecución algoritmos propuestos}
+\\\scriptsize{\color{white}.\color{black}\\Figura 11: Tabla de resultados tiempo de ejecución algoritmos propuestos}
 \end{center}
-Para mejor visualización y análisis, se graficó los datos de la figura 10 en dos gráficos, uno para sucesor y otro para predecesor.
+Para mejor visualización y análisis, se graficó los datos de la figura 11 en dos gráficos, uno para sucesor y otro para predecesor.
 \begin{center}\begin{figure}[htp]
 \centering
 \includegraphics[scale=0.45]{exppred.pdf}
-\\\scriptsize{\color{white}.\color{black}\\Figura 11: Comparación de soluciones para predecesor}
+\\\scriptsize{\color{white}.\color{black}\\Figura 12: Comparación de soluciones para predecesor}
 \label{etiqueta}
 \end{figure}
 \end{center}
 \begin{center}\begin{figure}[htp]
 \centering
 \includegraphics[scale=0.45]{expsuc.pdf}
-\\\scriptsize{\color{white}.\color{black}\\Figura 12: Comparación de soluciones para sucesor}
+\\\scriptsize{\color{white}.\color{black}\\Figura 13: Comparación de soluciones para sucesor}
 \label{etiqueta}
 \end{figure}
 \end{center}
