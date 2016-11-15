@@ -249,4 +249,124 @@ Para mejor visualización y análisis, se graficó los datos de la figura 11 en 
 Como podemos ver en la figura 11 y 12, los resultados obtenidos comprueban la hipótesis formulada al comienzo del experimento, para el cálculo del predecesor y sucesor el peor resultado obtenido fue la solución del BST. la curva de este tiene forma logarítmica. Para los bitmaps, el bitmap sin compresión obtuvo el mejor resultado.\\
 
 Para el problema de predecesor y sucesor, la utilización de bitmaps presentó una mejora sobre el uso de binary search tree en términos de tiempo y espacio. El bitmap sin compresión es más rápido que su contraparte comprimida pero, evidentemente, gasta más espacio, por lo tanto la utilización de uno sobre otro depende de los requerimientos, si se debe priorizar tiempo por sobre espacio entonces es recomendable utilizar bitmap sin compresión, en el caso contrario es mejor utilizar bitmap H$_{0}$-comprimido.
+
+\section{Perfect Hashing}
+\subsection{Descripción del Problema}
+Una función hash es cualquier función , que pueda ser usada para mapear un dato
+(objeto , string , etc.) de tamaño variable , a un dato de tamaño fijo. El valor retornado por la función hash , suele llamarse hash value o hash code.
+
+
+El problema consiste en satisfacer la necesidad de mapear datos de tamaño variable a datos de tamaño fijo, y realizar consultas de elementos en tiempo constante O(1),en la solución comunmente utilizada ( unordered\_map) aun usando diversas funciones hash, existe la posibilidad de que ocurran colisiones ( Cuando datos distintos obtienen el mismo hash value), pudiendo manejarlas al menos de dos maneras , Open Addressing y Separate Chaining , que nos llevan a soluciones que no son O(1) en peor caso.
+
+
+Nuestro objetivo en este trabajo es mostrar que con el uso de bitmaps y la operación rank sobre los bitmap , se puede mantener una funcion hash perfecta , es decir con tiempo constante para consultar por algun elemento en el conjunto, contrarestando con una estructura de común uso para el mismo problema, unordered\_map. 
+\subsection{Preeliminar}
+
+Se define:
+\begin{enumerate}
+    \item Key: Valor a mapear, en específico para este trabajos el dominio serán los enteros.
+    \item Value: Dato que es guardado en la posición a la que fue mapeado Key.
+    \item n : Valor máximo de Key posible, es decir cualquier Key estará en el intervalo [1, ... , n]
+    \item t : Cantidad de elementos, que serán mapeados.
+    \item r : Número de bits para representar el dato a guardar ( Value).
+\end{enumerate}
+\\
+Para efectos de este trabajo, se realizarán las siguientes asunciones:
+\begin{enumerate}
+    \item El conjunto de Key se encuentra ordenado, en una etapa de preprocesamiento, con una priority queue , con un costo total de O(t*log(t)), donde t es la cantidad de elementos.
+    \item r será la cantidad necesaria para representar entero , es decir 32 bits.
+\end{enumerate}
+\\
+Para esta implementación se hizo uso de la librería SDSL-lite ( de estructuras sucintas), las estructuras sucintas son representaciones de objetos ( vectores, arboles, etc) ocupando un espacio cercano al limite inferior teorico ( según teoría de información) soportando operaciones de las estructuras originales en tiempo eficiente. 
+\\
+En específico se hizo uso de bitvector, que es un array de bits es decir en cada posicion del arreglo solo pueden haber dos valores posibles, 1 ó 0, esta estructura sucinta ocupa espacio $O(64[n/64+1])$, tambien se usó la clase $rank\_support\_v$, es una estructura que implementa la operacion rank sobre un bitvector (la operación rank cuenta la cantidad de 1 que existen hasta la posicion i-esima) ocupa un espacio adicional de $O(0.25n)$ y resuelve la operacion rank en tiempo de ejecución $O(1)$.
+
+
+\subsection{Solución}
+Teniendo una estructura que soporta rank sobre un bitvector se procede de la siguiente forma para un arreglo de enteros A de t elementos , y un bitmap B de n elementos:
+
+\begin{center}\begin{tabular}{|c|c|c|c|c|c|c|}
+\hline
+	2 & 4 & 7 & 10 & 11 & 12 & 17 \\
+\hline
+\end{tabular}
+
+\\\scriptsize{\color{white}.\color{black}\\Figura x: Representación del arreglo A, cada elemeno es una Key}
+\end{center}
+\begin{center}
+\begin{enumerate}
+    \item Se itera sobre el arreglo A que contiene todas las Keys. 
+    \item Por cada Key , se marca en el bitmap un 1 en la posición $Key$ de bitmap.
+    
+\end{enumerate}
+\\
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+\hline
+	 0 & 1 & 0 &1 &0 &0 &1 &0 & 0 & 1 & 1 & 1 & 0 & 0 & 0 & 0 & 1 &0 \\
+\hline
+\end{tabular}
+\\\scriptsize{\color{white}.\color{black}\\Figura x: Representación de un bitmap B, cada elemento es un 1 o 0}
+\end{center}
+
+Ahora para consultar si alguna Key i existe, basta con consultar primero si $B[i]==1$, si es asi , accedemos al value de la key i de la forma: $A[rank_B(i)]$ .
+\begin{center}\begin{figure}[htp]
+\centering
+\includegraphics[scale=0.5]{3.png}
+\\\scriptsize{\color{white}.\color{black}\\Figura Z:Acceder al elemento i en el arreglo A  }
+\label{etiqueta}
+\end{figure}
+\end{center}
+
+
+Cabe destacar que esta técnica de perfect hashing fue aplicada en un contexto estatico, es decir asumimos que tenemos un arreglo ordenado por Key de menor a mayor por lo cual no es incluido el pre-procesamiento del arreglo en el analisis de tiempo.
+\subsection{Hipotesis}
+Para efectos de este trabajo, se considero $r$ como la cantidad de bits para representar un entero. 
+\\
+Nuestras hipotesis antes de ejecutar los experimentos son:
+\begin{enumerate}
+    \item La solución implementando bitvector y rank ocupa menos espacio que unordered\_map.
+    \item La solución implementando bitvector y rank tiene mejor tiempo de ejecución debido a que asegura consultas en tiempo constante.
+    \item Podrian obtenerse mejores resultados en cuanto a espacio concierne, disminuyendo la cantidad de bits para representar los datos value.
+\end{enumerate}
+
+
+\subsection{Análisis de tiempo}
+Para nuestras soluciones al problema los analisis de tiempo serán solo para encontrar alguna Key (existente o no, dentro de bitvector y unordered\_map) son:
+\begin{enumerate}
+    \item Solucion array A+bitvector+rank : O(1) Peor caso
+    \item Solucion unordered\_map : O(1) Caso promedio, O(n) en peor caso,con n tamaño del contenedor.
+\end{enumerate}
+\\
+
+\subsection{Experimentos}
+Para los experimentos, se fijo un n (tamaño máximo de key) en 100000.
+Aumentando a cantidad de elementos o Keys hasta llegar al maximo.
+
+\begin{center}\begin{figure}[htp]
+\centering
+\includegraphics[scale=0.5]{1.pdf}
+\\
+\scriptsize{\color{white}.\color{black}\\Figura Z:Grafica Cantidad elementos vs Tiempo }
+\label{etiqueta}
+\end{figure}
+\end{center}
+
+
+\begin{center}\begin{figure}[htp]
+\centering
+\includegraphics[scale=0.5]{2.pdf}
+\\
+\scriptsize{\color{white}.\color{black}\\Figura Z:Grafica Cantidad elementos vs Tiempo }
+\label{etiqueta}
+\end{figure}
+\end{center}
+\subsection{Conclusiones}
+
+Se concluye que bajo las hipotesis propuestas :
+\begin{enumerate}
+    \item Efectivamente nuestra solución implementada con bitvector y rank, tienen un comportamiento constante.
+    \item La solución implementando bitvector y rank debido a que son estructuras compactas ocupan menos espacio , notar que el parecido en las graficas , es por causa del arreglo de datos ( en nuestro caso enteros) A.
+    \item Si tuvieramos conocimiento del dominio es especifico podriamos representar en menos bits los datos y asi disminuir aun mas la brecha de espacio.
+    \item Cuando la relacion $t/n$ es muy pequeña (menor a 0,1) ocupar cualquier solucion es indiferente para un analisis de espacio.
+\end{enumerate}
 \end{document}
